@@ -81,37 +81,10 @@ class Datasets():
 
             data_sample[i] = img
 
-        # TASK 1
-        # TODO: Calculate the mean and standard deviation
-        #       of the samples in data_sample and store them in
-        #       self.mean and self.std respectively.
-        #
-        #       Note: This is _not_ a mean over all pixels;
-        #             it is a mean image (the mean input data point).
-        #       
-        #             For example, the mean of the two images:
-        #
-        #             [[[0, 0, 100], [0, 0, 100]],      [[[100, 0, 0], [100, 0, 0]],
-        #              [[0, 100, 0], [0, 100, 0]],  and  [[0, 100, 0], [0, 100, 0]],
-        #              [[100, 0, 0], [100, 0, 0]]]       [[0, 0, 100], [0, 0, 100]]]
-        #
-        #             would be
-        #
-        #             [[[50, 0, 50], [50, 0, 50]],
-        #              [[0, 100, 0], [0, 100, 0]],
-        #              [[50, 0, 50], [50, 0, 50]]]
-        #
-        # ==========================================================
-
         # store total number of images
         num = len(data_sample)
 
         self.mean = np.mean(data_sample, axis=0)
-        # take mean of pixels at each position by iterating over array of arrays and keeping track of total at that position
-        # for i in range(num):
-        #     img = data_sample[i]
-        #     for 
-
         self.std = np.std(data_sample, axis=0)
 
         # ==========================================================
@@ -137,18 +110,7 @@ class Datasets():
         Returns:
             img - numpy array of shape (image size, image size, 3)
         """
-
-        # TASK 1
-        # TODO: Standardize the input image. Use self.mean and self.std
-        #       that were calculated in calc_mean_and_std() to perform
-        #       the standardization.
-        # =============================================================
-
         img = (img - self.mean) / self.std
-        # img = img * 2.0 - 1.0 # avoids clamping in relu
-
-        # =============================================================
-
         return img
 
     def preprocess_fn(self, img):
@@ -169,16 +131,6 @@ class Datasets():
         else:
             img = img / 255.
             img = self.standardize(img)
-
-        # EXTRA CREDIT:
-        # Write your own custom data augmentation procedure, creating
-        # an effect that cannot be achieved using the arguments of
-        # ImageDataGenerator. This can potentially boost your accuracy
-        # in the validation set. Note that this augmentation should
-        # only be applied to some input images, so make use of the
-        # 'random' module to make sure this happens. Also, make sure
-        # that ImageDataGenerator uses *this* function for preprocessing
-        # on augmented data.
 
         if random.random() < 0.3:
             img = img + tf.random.uniform(
@@ -207,37 +159,18 @@ class Datasets():
         """
 
         if augment:
-            # TODO: Use the arguments of ImageDataGenerator()
-            #       to augment the data. Leave the
-            #       preprocessing_function argument as is unless
-            #       you have written your own custom preprocessing
-            #       function (see custom_preprocess_fn()).
-            #
-            # Documentation for ImageDataGenerator: https://bit.ly/2wN2EmK
-            #
-            # ============================================================
-
-            # define data augmentation settings
             datagen_args = {
                 'preprocessing_function': self.preprocess_fn,
-                'rotation_range': 10,  # Apply random rotations within the range of -20 to 20 degrees
-                'width_shift_range': 0.1,  # Apply random horizontal shifts within the range of -0.1 to 0.1
-                'height_shift_range': 0.1,  # Apply random vertical shifts within the range of -0.1 to 0.1
-                # 'zoom_range': 0.1,  # Apply random zoom within the range of 0.8 to 1.2
-                # 'horizontal_flip': True,  # Apply random horizontal flipping
-                # 'vertical_flip': True,
-                'brightness_range': (0.9, 1.1),  # Apply random brightness variations within the range of 0.8 to 1.2
-                # 'shear_range': 0.0,  # Apply random shear transformations within the range of -0.2 to 0.2
-                # 'channel_shift_range': 0.0,  # Apply random channel shifts within the range of -0.2 to 0.2
-                'fill_mode': 'nearest'  # Fill any empty pixels with the nearest available pixels
+                'rotation_range': 10,
+                'width_shift_range': 0.1,
+                'height_shift_range': 0.1,
+                'brightness_range': (0.9, 1.1),
+                'fill_mode': 'nearest'
             }
 
-            # create ImageDataGenerator with specified data augmentation settings
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(**datagen_args)
 
-            # ============================================================
         else:
-            # Don't modify this
             data_gen = tf.keras.preprocessing.image.ImageDataGenerator(
                 preprocessing_function=self.preprocess_fn)
 
