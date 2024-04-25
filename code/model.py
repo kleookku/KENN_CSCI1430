@@ -1,6 +1,8 @@
+# model.py
 import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, Flatten, Dense, LeakyReLU, BatchNormalization, Dropout
 from tensorflow.keras.models import Sequential
+import preprocess  # Make sure preprocess.py is in the same directory
 
 def build_discriminator(input_shape=(128, 128, 3)):
     model = Sequential([
@@ -32,13 +34,29 @@ def build_discriminator(input_shape=(128, 128, 3)):
         Dense(1, activation='sigmoid')
     ])
 
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
-# Build the discriminator
-discriminator = build_discriminator()
+def train_discriminator():
+    model = build_discriminator()
+    model.summary()
 
-# Compile the model
-discriminator.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    # Load datasets from preprocess module
+    train_dataset = preprocess.train_dataset
+    val_dataset = preprocess.val_dataset
+    test_dataset = preprocess.test_dataset
 
-# Print the model summary
-discriminator.summary()
+    # Training the model
+    history = model.fit(
+        train_dataset,
+        epochs=10,  # You can modify this based on how long you want to train
+        validation_data=val_dataset
+    )
+
+    # Evaluating the model
+    print("Evaluating the model on test data:")
+    scores = model.evaluate(test_dataset)
+    print(f"Test Loss: {scores[0]}, Test Accuracy: {scores[1]}")
+
+if __name__ == "__main__":
+    train_discriminator()
