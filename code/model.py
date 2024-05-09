@@ -85,11 +85,10 @@ def train_discriminator():
     model = build_discriminator()
     model.summary()
 
-    show_random_images(train_dataset, "Random Training Images")
-    show_random_images(val_dataset, "Random Validation Images")
-
+    # the call back ensures it will save the best model 
     checkpoint_cb = ModelCheckpoint("best_model.keras", save_best_only=True, monitor='val_accuracy', verbose=1)
 
+    # the actual call to train
     history = model.fit(
         train_dataset,
         epochs=hyperparams['epochs'],
@@ -97,6 +96,17 @@ def train_discriminator():
         callbacks=[checkpoint_cb]
     )
 
+    
+
+if __name__ == "__main__":
+    # here we are just doing some sanity check, can honestly just comment out
+    show_random_images(train_dataset, "Random Training Images")
+    show_random_images(val_dataset, "Random Validation Images")
+
+    # main call
+    train_discriminator()
+
+    # test and other
     print("Evaluating the model on test data:")
     model = tf.keras.models.load_model("best_model.keras")
     scores = model.evaluate(test_dataset)
@@ -117,6 +127,3 @@ def train_discriminator():
     plt.show()
 
     predict_and_visualize("best_model.keras", test_dataset, num_samples=10)
-
-if __name__ == "__main__":
-    train_discriminator()
