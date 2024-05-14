@@ -25,7 +25,7 @@ train_dataset = img_gen.flow_from_directory(
     '../data/rvf10k/train',
     target_size=(img_size, img_size),
     color_mode='rgb',
-    class_mode='binary',
+    class_mode='categorical',
     batch_size=b_size,
     subset="training",
 )
@@ -35,7 +35,7 @@ val_dataset = img_gen.flow_from_directory(
     '../data/rvf10k/valid',
     target_size=(img_size, img_size),
     color_mode='rgb',
-    class_mode='binary',
+    class_mode='categorical',
     batch_size=b_size,
     subset="validation",
 )
@@ -45,6 +45,6 @@ test_dataset = test_gen.flow_from_directory(
     '../data/rvf10k/valid',
     target_size=(img_size, img_size),
     color_mode='rgb',
-    class_mode='binary',
+    class_mode='categorical',
     batch_size=b_size
 )
