@@ -1,4 +1,4 @@
-# [CSCI1430] Authentic Face Identification Project
+# Authentic Face Identification Project
 
 ## Overview
 ### Preprocessing
