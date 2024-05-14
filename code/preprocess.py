@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 img_size = 128
-b_size = 8  
+b_size = 8
 
 # data augmentation
 img_gen = tf.keras.preprocessing.image.ImageDataGenerator(
@@ -27,17 +27,17 @@ train_dataset = img_gen.flow_from_directory(
     color_mode='rgb',
     class_mode='binary',
     batch_size=b_size,
-    subset="training", 
+    subset="training",
 )
 
 # validation dataset
 val_dataset = img_gen.flow_from_directory(
-    '../data/rvf10k/train',
+    '../data/rvf10k/valid',
     target_size=(img_size, img_size),
     color_mode='rgb',
     class_mode='binary',
     batch_size=b_size,
-    subset="validation",  
+    subset="validation",
 )
 
 # set up testing dataset
