@@ -39,7 +39,7 @@ def build_discriminator(input_shape=(128, 128, 3), dropout_rate=0.3):
         MaxPooling2D(pool_size=2),
 
         Flatten(),
-        Dense(800, activation=swish),  # Increase the number of neurons
+        Dense(800, activation=swish),
         LeakyReLU(alpha=0.2),
         Dropout(dropout_rate),
         Dense(2, activation='softmax')
