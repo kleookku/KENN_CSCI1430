@@ -1,4 +1,4 @@
-# KENN_CSCI1430
+# Authentic Face Identification Project
 
 ## Overview
 ### Preprocessing
